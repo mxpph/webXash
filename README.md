@@ -84,6 +84,23 @@ The server's websocket address will be `<ip>:27016` by default.
 
 Launch the game and find it in the in-game menu under MULTIPLAYER -> LAN Game.
 
+### Connecting to Xash3D servers via WebTransport
+
+For now this probably only works when run locally.
+
+First, enter the `xash3d-middleware` directory and run `setup-certs.sh`. Note down the certificate hash that is output, and import the generated `cert.p12` file into your browser's certificate management settings.
+
+Setup the python environment: 
+```bash 
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
+
+Change the target IP/port at the top of `middleware.py` to that of the server you want to connect to, then run `python middleware.py`.
+
+Run webXash (see final section). Enter the WebTransport URL (`localhost:4433` if you didn't change anything) followed by the certificate hash previously shown. Launch the game and find the server in MULTIPLAYER -> LAN Game.
+
 ## Save manager
 
 The save manager captures saves when they're made in-game and stores them in indexedDB, then categorizes them by the game/mod name it was created under.
@@ -129,6 +146,8 @@ Clone the repo:
 git clone https://github.com/x8BitRain/webXash.git
 
 cd webXash
+
+npm install
 
 ./setup-xash.sh
 

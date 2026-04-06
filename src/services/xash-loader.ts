@@ -30,6 +30,7 @@ import CSMenuURL from 'cs16-client/cl_dll/menu_emscripten_wasm32.wasm?url';
 import CSClientURL from 'cs16-client/cl_dll/client_emscripten_wasm32.wasm?url';
 // @ts-ignore -- vite url imports
 import CSServerURL from 'cs16-client/dlls/cs_emscripten_wasm32.wasm?url';
+import { Xash3DWebTransport } from './xash-webtransport.ts';
 
 const XASH_BASE_DIR = '/rodir/';
 
@@ -168,10 +169,13 @@ const onBeforeUnload = (event: Event) => {
 
 class XashLoader {
   private async _getXashInstance(): Promise<
-    typeof Xash3D | typeof Xash3DWebRTC
+    typeof Xash3D | typeof Xash3DWebRTC | typeof Xash3DWebTransport
   > {
     const store = useXashStore();
-    if (store.multiplayerIP && /\d/.test(store.multiplayerIP)) {
+    if (store.wtServerUrl) {
+      const { Xash3DWebTransport } = await import('../services/xash-webtransport.ts');
+      return Xash3DWebTransport;
+    } else if (store.multiplayerIP && /\d/.test(store.multiplayerIP)) {
       const { Xash3DWebRTC } = await import('../services/xash-webrtc.ts');
       return Xash3DWebRTC;
     } else {
@@ -191,6 +195,8 @@ class XashLoader {
 
     const xash = new Xash3D({
       multiplayerIP: store.multiplayerIP,
+      wtServerUrl: store.wtServerUrl,
+      wtServerCertificateHashBase64: store.wtServerCertificateHashBase64,
       onError: XashLoader.removeReloadListener,
       module: {
         arguments: options.launchArgs,
@@ -589,6 +595,7 @@ class XashLoader {
     if (options.enableCheats) {
       options.xash.Cmd_ExecuteString('sv_cheats 1');
     }
+    options.xash.Cmd_ExecuteString('cl_test_bandwidth 0');
   }
 
   public static removeReloadListener() {

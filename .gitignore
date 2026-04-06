@@ -28,6 +28,8 @@ public/hl/valve
 # misc
 vite.config.d.ts
 vite.config.js
+__pycache__
+.venv/
 
 # Editor directories and files
 .vscode/*
@@ -39,3 +41,4 @@ vite.config.js
 *.njsproj
 *.sln
 *.sw?
+

@@ -14,6 +14,8 @@ export const useXashStore = defineStore(
     const selectedZip = ref('');
     const selectedLocalFolder = ref('');
     const multiplayerIP = ref('');
+    const wtServerUrl = ref('');
+    const wtServerCertificateHashBase64 = ref('');
     const saves = ref<Partial<SaveEntry>[]>();
     const loading = ref(false);
     const loadingProgress = ref(1);
@@ -88,6 +90,8 @@ export const useXashStore = defineStore(
       selectedZip,
       selectedLocalFolder,
       multiplayerIP,
+      wtServerUrl,
+      wtServerCertificateHashBase64,
       saves,
       loading,
       loadingProgress,
@@ -112,6 +116,8 @@ export const useXashStore = defineStore(
         'selectedGameKey',
         'selectedZip',
         'multiplayerIP',
+        'wtServerUrl',
+        'wtServerCertificateHashBase64',
         'selectedLocalFolder',
         'launchOptions',
         'fullScreen',
